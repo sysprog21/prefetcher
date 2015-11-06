@@ -18,12 +18,13 @@ int main(void)
 {
     /* verify the result of 4x4 matrix */
     {
-        int testin[16] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 };
+        int testin[16] = { 0, 1,  2,  3,  4,  5,  6,  7,
+                           8, 9, 10, 11, 12, 13, 14, 15 };
         int testout[16];
 
         for (int y = 0; y < 4; y++) {
             for (int x = 0; x < 4; x++)
-                printf(" %2d", testin[y*4+x]);
+                printf(" %2d", testin[y * 4 + x]);
             printf("\n");
         }
         printf("\n");
@@ -52,19 +53,22 @@ int main(void)
         sse_prefetch_transpose(src, out0, TEST_W, TEST_H);
         gettimeofday(&etime, NULL);
         printf("sse prefetch: %ld us\n",
-               (etime.tv_sec - stime.tv_sec) * 1000000 + (etime.tv_usec - stime.tv_usec));
+               (etime.tv_sec - stime.tv_sec) * 1000000 +
+               (etime.tv_usec - stime.tv_usec));
 
         gettimeofday(&stime, NULL);
         sse_transpose(src, out1, TEST_W, TEST_H);
         gettimeofday(&etime, NULL);
         printf("sse: %ld us\n",
-               (etime.tv_sec - stime.tv_sec) * 1000000 + (etime.tv_usec - stime.tv_usec));
+               (etime.tv_sec - stime.tv_sec) * 1000000 +
+               (etime.tv_usec - stime.tv_usec));
 
         gettimeofday(&stime, NULL);
         naive_transpose(src, out2, TEST_W, TEST_H);
         gettimeofday(&etime, NULL);
         printf("naive: %ld us\n",
-               (etime.tv_sec - stime.tv_sec) * 1000000 + (etime.tv_usec - stime.tv_usec));
+               (etime.tv_sec - stime.tv_sec) * 1000000 +
+               (etime.tv_usec - stime.tv_usec));
 
         free(src);
         free(out0);
