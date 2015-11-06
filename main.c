@@ -65,17 +65,17 @@ int main(int argc, char *argv[])
         clock_gettime(CLOCK_REALTIME, &start);
         sse_prefetch_transpose(src, out0, TEST_W, TEST_H);
         clock_gettime(CLOCK_REALTIME, &end);
-        printf("sse prefetch: %ld us\n", diff_in_us(start, end));
+        printf("sse prefetch: \t %ld us\n", diff_in_us(start, end));
 
         clock_gettime(CLOCK_REALTIME, &start);
         sse_transpose(src, out1, TEST_W, TEST_H);
         clock_gettime(CLOCK_REALTIME, &end);
-        printf("sse: %ld us\n", diff_in_us(start, end));
+        printf("sse: \t\t %ld us\n", diff_in_us(start, end));
 
         clock_gettime(CLOCK_REALTIME, &start);
         naive_transpose(src, out2, TEST_W, TEST_H);
         clock_gettime(CLOCK_REALTIME, &end);
-        printf("naive: %ld us\n", diff_in_us(start, end));
+        printf("naive: \t\t %ld us\n", diff_in_us(start, end));
 
         free(src);
         free(out0);
