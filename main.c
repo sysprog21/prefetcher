@@ -14,12 +14,26 @@
 
 #include "impl.c"
 
+static long diff_in_us(struct timespec t1, struct timespec t2)
+{
+    struct timespec diff;
+    if (t2.tv_nsec-t1.tv_nsec < 0) {
+        diff.tv_sec  = t2.tv_sec - t1.tv_sec - 1;
+        diff.tv_nsec = t2.tv_nsec - t1.tv_nsec + 1000000000;
+    } else {
+        diff.tv_sec  = t2.tv_sec - t1.tv_sec;
+        diff.tv_nsec = t2.tv_nsec - t1.tv_nsec;
+    }
+    return (diff.tv_sec / 1000000000.0 + diff.tv_nsec / 1000.0);
+}
+
 int main(void)
 {
     /* verify the result of 4x4 matrix */
     {
         int testin[16] = { 0, 1,  2,  3,  4,  5,  6,  7,
-                           8, 9, 10, 11, 12, 13, 14, 15 };
+                           8, 9, 10, 11, 12, 13, 14, 15
+                         };
         int testout[16];
 
         for (int y = 0; y < 4; y++) {
@@ -37,7 +51,7 @@ int main(void)
     }
 
     {
-        struct timeval stime, etime;
+        struct timespec start, end;
         int *src =  (int *) malloc(sizeof(int) * TEST_W * TEST_H);
         int *out0 = (int *) malloc(sizeof(int) * TEST_W * TEST_H);
         int *out1 = (int *) malloc(sizeof(int) * TEST_W * TEST_H);
@@ -49,26 +63,20 @@ int main(void)
                 *(src + y * TEST_W + x) = rand();
         }
 
-        gettimeofday(&stime, NULL);
+        clock_gettime(CLOCK_REALTIME, &start);
         sse_prefetch_transpose(src, out0, TEST_W, TEST_H);
-        gettimeofday(&etime, NULL);
-        printf("sse prefetch: %ld us\n",
-               (etime.tv_sec - stime.tv_sec) * 1000000 +
-               (etime.tv_usec - stime.tv_usec));
+        clock_gettime(CLOCK_REALTIME, &end);
+        printf("sse prefetch: %ld us\n", diff_in_us(start, end));
 
-        gettimeofday(&stime, NULL);
+        clock_gettime(CLOCK_REALTIME, &start);
         sse_transpose(src, out1, TEST_W, TEST_H);
-        gettimeofday(&etime, NULL);
-        printf("sse: %ld us\n",
-               (etime.tv_sec - stime.tv_sec) * 1000000 +
-               (etime.tv_usec - stime.tv_usec));
+        clock_gettime(CLOCK_REALTIME, &end);
+        printf("sse: %ld us\n", diff_in_us(start, end));
 
-        gettimeofday(&stime, NULL);
+        clock_gettime(CLOCK_REALTIME, &start);
         naive_transpose(src, out2, TEST_W, TEST_H);
-        gettimeofday(&etime, NULL);
-        printf("naive: %ld us\n",
-               (etime.tv_sec - stime.tv_sec) * 1000000 +
-               (etime.tv_usec - stime.tv_usec));
+        clock_gettime(CLOCK_REALTIME, &end);
+        printf("naive: %ld us\n", diff_in_us(start, end));
 
         free(src);
         free(out0);
