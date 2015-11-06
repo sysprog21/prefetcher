@@ -27,7 +27,7 @@ static long diff_in_us(struct timespec t1, struct timespec t2)
     return (diff.tv_sec / 1000000000.0 + diff.tv_nsec / 1000.0);
 }
 
-int main(void)
+int main(int argc, char *argv[])
 {
     /* verify the result of 4x4 matrix */
     {
@@ -52,16 +52,15 @@ int main(void)
 
     {
         struct timespec start, end;
-        int *src =  (int *) malloc(sizeof(int) * TEST_W * TEST_H);
+        int *src  = (int *) malloc(sizeof(int) * TEST_W * TEST_H);
         int *out0 = (int *) malloc(sizeof(int) * TEST_W * TEST_H);
         int *out1 = (int *) malloc(sizeof(int) * TEST_W * TEST_H);
         int *out2 = (int *) malloc(sizeof(int) * TEST_W * TEST_H);
 
         srand(time(NULL));
-        for (int y = 0; y < TEST_H; y++) {
+        for (int y = 0; y < TEST_H; y++)
             for (int x = 0; x < TEST_W; x++)
                 *(src + y * TEST_W + x) = rand();
-        }
 
         clock_gettime(CLOCK_REALTIME, &start);
         sse_prefetch_transpose(src, out0, TEST_W, TEST_H);
