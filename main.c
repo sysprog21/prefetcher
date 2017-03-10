@@ -29,7 +29,7 @@ static long diff_in_us(struct timespec t1, struct timespec t2)
     return (diff.tv_sec * 1000000.0 + diff.tv_nsec / 1000.0);
 }
 
-int main(int argc, char *argv[])
+int main()
 {
     /* verify the result of 4x4 matrix */
     {
