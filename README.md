@@ -8,8 +8,6 @@ sse:             113594 us
 naive:           222115 us
 ```
 
-The work was based on the experiments by `Champ Yen <champ.yen@gmail.com>`.
-
 Coding Style
 ============
 You can use [AStyle](http://astyle.sourceforge.net/) source code indenter to
