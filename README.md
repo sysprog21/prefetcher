@@ -7,13 +7,3 @@ sse prefetch:     55554 us
 sse:             113594 us
 naive:           222115 us
 ```
-
-Coding Style
-============
-You can use [AStyle](http://astyle.sourceforge.net/) source code indenter to
-help you auto format your source code. It will for sure not correct all your coding styles but for sure will eliminate most of them.
-
-To format your file you can execute below command:
-```sh
-astyle --style=kr --indent=spaces=4 --indent-switches --suffix=none *.[ch]
-```
